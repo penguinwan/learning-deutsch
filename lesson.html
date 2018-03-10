@@ -39,11 +39,10 @@
 		}
 
 		function nextRandom() {
-			var randomNumber = Math.floor(Math.random() * totalLine) + 0;
-			speak(randomNumber);
-			var text = lines[randomNumber];
+			currentIndex = Math.floor(Math.random() * totalLine) + 0;
+			speak(currentIndex);
+			var text = lines[currentIndex];
 		    document.getElementById("question").innerHTML = text;
-		    currentIndex = randomNumber;
 		}
 
 		function showText() {
