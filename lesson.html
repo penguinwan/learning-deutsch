@@ -1,0 +1,58 @@
+<html>
+<head>
+<script>
+
+</script>
+</head>
+<body>
+	Choose a Dictionary File: <input type="file" id="fileinput" /><br/>
+	<input type="button" onclick="showText()" value="Show"/>&nbsp;
+	<input type="button" onclick="hideText()" value="Hide"/>&nbsp;
+	<font size="24"><label id="question" style="color:white">...</label></font><br/>
+	<input type="button" onclick="speak()" value="Speak Again"/>&nbsp;<input type="button" onclick="nextRandom()" value="Next"/>
+	<script>
+		var lines;
+		var totalLine;
+		var currentIndex;
+		document.getElementById('fileinput').onchange = function() {
+			var file = this.files[0];
+
+			var reader = new FileReader();
+			reader.onload = function(progressEvent) {
+				// By lines
+				lines = this.result.split('\n');
+				totalLine = lines.length;
+				//for(var line = 0; line < lines.length; line++){
+				//  console.log(lines[line]);
+				//}
+			};
+			reader.readAsText(file);
+		}
+
+		function speak() {
+			if('speechSynthesis' in window) {
+				var text = lines[currentIndex];
+			    var speech = new SpeechSynthesisUtterance(text);
+			    speech.lang = 'de-AT';
+			    window.speechSynthesis.speak(speech);
+			}
+		}
+
+		function nextRandom() {
+			var randomNumber = Math.floor(Math.random() * totalLine) + 0;
+			speak(randomNumber);
+			var text = lines[randomNumber];
+		    document.getElementById("question").innerHTML = text;
+		    currentIndex = randomNumber;
+		}
+
+		function showText() {
+			document.getElementById("question").style = 'color:black';
+		}
+
+		function hideText() {
+			document.getElementById("question").style = 'color:white';
+		}
+	</script>
+	</body>
+</html>
