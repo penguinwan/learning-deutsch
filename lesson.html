@@ -1,17 +1,33 @@
 <html>
 <head>
-<script>
-
-</script>
+<style>
+input[type="button"] {
+	background-color: #DAF7A6;
+	width: 150px;
+	height: 40px;
+	font-size: 16px;
+}
+input[type="text"] {
+	font-size: 24px;
+}
+label {
+	font-size: 36px;
+}
+</style>
 </head>
-<body>
-	<table border="1">
-		<tr><td>
-	Choose a Dictionary File: <input type="file" id="fileinput" /></td>
-	<tr><td><input type="button" onclick="showText()" value="Show"/>&nbsp;
-	<input type="button" onclick="hideText()" value="Hide"/>&nbsp;
+<body onkeypress="keyPressed(event)">
+	<table border="1" width="90%">
+	<tr><td>
+	<label>Choose a Dictionary File: </label>
+	<input type="file" id="fileinput" />
+	</td></tr>
+	<tr><td><input type="button" onclick="showText()" value="Show Text (E)"/>
+	<input type="button" onclick="hideText()" value="Hide Text (R)"/>&nbsp;
 	<font size="24"><label id="question" style="color:white">...</label></font></td></tr>
-	<tr><td><input type="button" onclick="speak()" value="Speak Again"/>&nbsp;<input type="button" onclick="nextRandom()" value="Next Speech"/></td></tr>
+	<tr><td>
+		<input type="button" onclick="speak()" value="Speak Again (D)"/>
+		<input type="button" onclick="nextRandom()" value="Next Speech (F)"/>
+	</td></tr>
 	</table>
 	<script>
 		var lines;
@@ -25,11 +41,20 @@
 				// By lines
 				lines = this.result.split('\n');
 				totalLine = lines.length;
-				//for(var line = 0; line < lines.length; line++){
-				//  console.log(lines[line]);
-				//}
 			};
 			reader.readAsText(file);
+		}
+
+		function keyPressed(event) {
+			if(event.code == 'KeyF') {
+				nextRandom();
+			} else if(event.code == 'KeyD') {
+				speak();
+			} else if(event.code == 'KeyE') {
+				showText();
+			} else if(event.code == 'KeyR') {
+				hideText();
+			}
 		}
 
 		function speak() {
