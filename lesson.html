@@ -5,11 +5,14 @@
 </script>
 </head>
 <body>
-	Choose a Dictionary File: <input type="file" id="fileinput" /><br/>
-	<input type="button" onclick="showText()" value="Show"/>&nbsp;
+	<table border="1">
+		<tr><td>
+	Choose a Dictionary File: <input type="file" id="fileinput" /></td>
+	<tr><td><input type="button" onclick="showText()" value="Show"/>&nbsp;
 	<input type="button" onclick="hideText()" value="Hide"/>&nbsp;
-	<font size="24"><label id="question" style="color:white">...</label></font><br/>
-	<input type="button" onclick="speak()" value="Speak Again"/>&nbsp;<input type="button" onclick="nextRandom()" value="Next"/>
+	<font size="24"><label id="question" style="color:white">...</label></font></td></tr>
+	<tr><td><input type="button" onclick="speak()" value="Speak Again"/>&nbsp;<input type="button" onclick="nextRandom()" value="Next Speech"/></td></tr>
+	</table>
 	<script>
 		var lines;
 		var totalLine;
