@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8'/>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
+    <title>Responsive Design</title>
+    <style>
+.page {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.section {
+  width: 100%;
+  display: flex;
+  justify-random: center;
+  align-items: center;
+}
+
+.dictionary {
+  background-color: #5995DA;
+}
+
+.header {
+  background-color: #B2D6FF;
+}
+
+.random {
+  background-color: #EAEDF0;
+}
+
+.show {
+  background-color: #D6E9FE;
+}
+
+.hide {
+  background-color: #F5CF8E;
+}
+
+.repeat {
+  background-color: #F09A9D;
+}
+
+.next {
+  background-color: #C8C6FA;
+}
+
+input[type="button"] {
+  background-color: #DAF7A6;
+  width: 100%;
+  height: 40px;
+}
+
+/* Phone Styles */
+@media only screen and (min-width: 201px) and (max-width: 399px) {
+  .show,
+  .hide,
+  .repeat,
+  .next {
+    width: 50%;
+  }
+  .dictionary,
+  .text {
+  	width: 100%;
+  }
+  .section {
+  	font-size: 12px;
+  }
+}
+
+/* Tablet Styles */
+@media only screen and (min-width: 401px) and (max-width: 960px) {
+  .show,
+  .hide,
+  .repeat,
+  .next {
+    width: 50%;
+  }
+  .dictionary,
+  .text {
+  	width: 100%;
+  }
+  .section {
+  	font-size: 24px;
+  }
+}
+
+/* Desktop Styles */
+@media only screen and (min-width: 961px) {
+  .show,
+  .hide,
+  .repeat,
+  .next {
+    width: 50%;
+  }
+  .dictionary,
+  .text {
+  	width: 100%;
+  }
+  .section {
+  	font-size: 36px;
+  }
+}
+
+	</style>
+  </head>
+  <body>
+    <div class='page'>
+	  <div class='section dictionary'>
+	  	<label>Choose a Dictionary File: </label>
+	  	<input type="file" id="fileinput" />
+	  </div>
+	  <div class='section random'>
+	    <label>Speak randomly? </label>
+		<input type="radio" name="isRandom" value="yes" onchange="resetCurrentIndex()">Yes</input>
+		<input type="radio" name="isRandom" value="no" onchange="resetCurrentIndex()">No</input>
+	  </div>
+	  <div class='section repeat'>
+	    <input type="button" onclick="speak()" value="Speak Again (D)"/>
+	  </div>
+	  <div class='section next'>
+	    <input type="button" onclick="next()" value="Next Speech (F)"/>
+	  </div>
+	  <div class='section show'>
+	    <input type="button" onclick="showText()" value="Show Text (E)"/>
+	  </div>
+	  <div class='section hide'>
+	    <input type="button" onclick="hideText()" value="Hide Text (R)"/>
+	  </div>
+	  <div class='section text'>
+	    <label id="question" style="color:white">...</label>
+	  </div>
+	</div>
+
+	<script>
+		var lines;
+		var totalLine;
+		var currentIndex;
+		document.getElementById('fileinput').onchange = function() {
+			var file = this.files[0];
+
+			var reader = new FileReader();
+			reader.onload = function(progressEvent) {
+				// By lines
+				lines = this.result.split('\n');
+				totalLine = lines.length;
+			};
+			reader.readAsText(file);
+		}
+
+		function resetCurrentIndex() {
+			currentIndex = 0;
+		}
+
+		function keyPressed(event) {
+			if(event.code == 'KeyF') {
+				next();
+			} else if(event.code == 'KeyD') {
+				speak();
+			} else if(event.code == 'KeyE') {
+				showText();
+			} else if(event.code == 'KeyR') {
+				hideText();
+			}
+		}
+
+		function speak() {
+			if('speechSynthesis' in window) {
+				var text = lines[currentIndex];
+			    var speech = new SpeechSynthesisUtterance(text);
+			    speech.lang = 'de-AT';
+			    window.speechSynthesis.speak(speech);
+			}
+		}
+
+		function next() {
+			var isRandom = document.querySelector('input[name="isRandom"]:checked').value;
+			if(isRandom == 'yes') {
+				currentIndex = Math.floor(Math.random() * totalLine) + 0;
+				speak();
+				var text = lines[currentIndex];
+			    document.getElementById("question").innerHTML = text;
+			} else {
+				if(currentIndex != (totalLine-1)) {
+					currentIndex++;
+				}
+				speak();
+				var text = lines[currentIndex];
+				document.getElementById("question").innerHTML = text;
+			}
+		}
+
+		function showText() {
+			document.getElementById("question").style = 'color:black';
+		}
+
+		function hideText() {
+			document.getElementById("question").style = 'color:white';
+		}
+	</script>
+  </body>
+</html>
