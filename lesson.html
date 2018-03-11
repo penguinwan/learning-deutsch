@@ -21,12 +21,17 @@ label {
 	<label>Choose a Dictionary File: </label>
 	<input type="file" id="fileinput" />
 	</td></tr>
+	<tr><td>
+	<label>Speak randomly? </label>
+	<input type="radio" name="isRandom" value="yes" onchange="resetCurrentIndex()">Yes</input>
+	<input type="radio" name="isRandom" value="no" onchange="resetCurrentIndex()">No</input>
+	</td></tr>
 	<tr><td><input type="button" onclick="showText()" value="Show Text (E)"/>
 	<input type="button" onclick="hideText()" value="Hide Text (R)"/>&nbsp;
 	<font size="24"><label id="question" style="color:white">...</label></font></td></tr>
 	<tr><td>
 		<input type="button" onclick="speak()" value="Speak Again (D)"/>
-		<input type="button" onclick="nextRandom()" value="Next Speech (F)"/>
+		<input type="button" onclick="next()" value="Next Speech (F)"/>
 	</td></tr>
 	</table>
 	<script>
@@ -45,9 +50,13 @@ label {
 			reader.readAsText(file);
 		}
 
+		function resetCurrentIndex() {
+			currentIndex = 0;
+		}
+
 		function keyPressed(event) {
 			if(event.code == 'KeyF') {
-				nextRandom();
+				next();
 			} else if(event.code == 'KeyD') {
 				speak();
 			} else if(event.code == 'KeyE') {
@@ -66,11 +75,21 @@ label {
 			}
 		}
 
-		function nextRandom() {
-			currentIndex = Math.floor(Math.random() * totalLine) + 0;
-			speak(currentIndex);
-			var text = lines[currentIndex];
-		    document.getElementById("question").innerHTML = text;
+		function next() {
+			var isRandom = document.querySelector('input[name="isRandom"]:checked').value;
+			if(isRandom == 'yes') {
+				currentIndex = Math.floor(Math.random() * totalLine) + 0;
+				speak(currentIndex);
+				var text = lines[currentIndex];
+			    document.getElementById("question").innerHTML = text;
+			} else {
+				speak(currentIndex);
+				var text = lines[currentIndex];
+				document.getElementById("question").innerHTML = text;
+				if(currentIndex != (totalLine-1)) {
+					currentIndex++;
+				}
+			}
 		}
 
 		function showText() {
