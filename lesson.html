@@ -37,7 +37,7 @@ label {
 	<script>
 		var lines;
 		var totalLine;
-		var currentIndex;
+		var currentIndex = -1;
 		document.getElementById('fileinput').onchange = function() {
 			var file = this.files[0];
 
@@ -51,7 +51,7 @@ label {
 		}
 
 		function resetCurrentIndex() {
-			currentIndex = 0;
+			currentIndex = -1;
 		}
 
 		function keyPressed(event) {
@@ -67,7 +67,7 @@ label {
 		}
 
 		function speak() {
-			if('speechSynthesis' in window) {
+			if(currentIndex != -1 && 'speechSynthesis' in window) {
 				var text = lines[currentIndex];
 			    var speech = new SpeechSynthesisUtterance(text);
 			    speech.lang = 'de-AT';
@@ -79,16 +79,16 @@ label {
 			var isRandom = document.querySelector('input[name="isRandom"]:checked').value;
 			if(isRandom == 'yes') {
 				currentIndex = Math.floor(Math.random() * totalLine) + 0;
-				speak(currentIndex);
+				speak();
 				var text = lines[currentIndex];
 			    document.getElementById("question").innerHTML = text;
 			} else {
-				speak(currentIndex);
-				var text = lines[currentIndex];
-				document.getElementById("question").innerHTML = text;
 				if(currentIndex != (totalLine-1)) {
 					currentIndex++;
 				}
+				speak();
+				var text = lines[currentIndex];
+				document.getElementById("question").innerHTML = text;
 			}
 		}
 
