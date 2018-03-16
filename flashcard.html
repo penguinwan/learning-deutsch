@@ -1,0 +1,103 @@
+<html>
+<title>Flash Cards - Noun</title>
+<style>
+.section {
+	width: 100%;
+}
+
+.flashcard {
+	width: 70%;
+	text-align: center;
+	line-height: 200px;
+	align: center;
+	background-color:yellow;
+	height: 200px;
+}
+
+.masculineCard {
+	background-color: #B6EBFE;
+	font-size: 36px;
+	color: #0406B9;
+	font-weight: bold;
+}
+
+.femanineCard {
+	background-color: #FDC1ED;
+	font-size: 36px;
+	color: #B90404;
+	font-weight: bold;
+}
+
+.neutralCard {
+	background-color: #B6FEC9;
+	font-size: 36px;
+	color: #03AE17;
+	font-weight: bold;
+}
+</style>
+<body>
+	<div class='section dictionary'>
+		<label>1. Choose a Dictionary File: </label>
+		<input type="file" id="fileinput"/>
+	</div>
+	<div class='section button'>
+		<label>2. Change the interval: </label>
+		<input type="text" value="1000" id="timer"/>
+		<input type="button" onclick="startSlideShow()" value="Start"/>
+		<input type="button" onclick="stopSlideShow()" value="Stop"/>
+	</div>
+	<div class='section'>
+		<div id='flashcard' class='flashcard'>
+			<label id='text'>...</label>
+		</div>
+	</div>
+<script>
+	var lines;
+	var totalLine;
+	var currentIndex = 0;
+	var timer;
+	document.getElementById('fileinput').onchange = function() {
+		var file = this.files[0];
+
+		var reader = new FileReader();
+		reader.onload = function(progressEvent) {
+			// By lines
+			lines = this.result.split('\n');
+			totalLine = lines.length;
+		};
+		reader.readAsText(file);
+	}
+
+	function startSlideShow() {
+		interval = document.getElementById('timer').value;
+		timer = setInterval(slideShow, interval);
+	}
+
+	function stopSlideShow() {
+		clearInterval(timer);
+	}
+
+	function slideShow() {
+		if(currentIndex >= (totalLine-1)) {
+			stopSlideShow();
+		}
+
+		text = lines[currentIndex++];
+		if(text.toUpperCase().startsWith('DER')) {
+			document.getElementById('flashcard').classList.add('masculineCard');
+			document.getElementById('flashcard').classList.remove('neutralCard');
+			document.getElementById('flashcard').classList.remove('femanineCard');
+		} else if (text.toUpperCase().startsWith('DIE')) {
+			document.getElementById('flashcard').classList.add('femanineCard');
+			document.getElementById('flashcard').classList.remove('masculineCard');
+			document.getElementById('flashcard').classList.remove('neutralCard');
+		} else if(text.toUpperCase().startsWith('DAS')) {
+			document.getElementById('flashcard').classList.add('neutralCard');
+			document.getElementById('flashcard').classList.remove('masculineCard');
+			document.getElementById('flashcard').classList.remove('femanineCard');
+		}
+		document.getElementById('text').innerText = text;
+	}
+</script>
+</body>
+</html>
