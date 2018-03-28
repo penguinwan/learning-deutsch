@@ -2,38 +2,39 @@
 <title>Flash Cards - Noun</title>
 <style>
 .section {
-	width: 100%;
+	width: 60%;
+	display: flex;
 }
 
 .flashcard {
-	width: 70%;
+	width: 30%;
+	font-size: 30px;
 	text-align: center;
-	line-height: 200px;
+	font-weight: bold;
 	align: center;
-	background-color:yellow;
 	height: 200px;
+}
+
+.invisible {
+	background-color: white;
+	color: white;
 }
 
 .masculineCard {
 	background-color: #B6EBFE;
-	font-size: 36px;
 	color: #0406B9;
-	font-weight: bold;
 }
 
 .femanineCard {
 	background-color: #FDC1ED;
-	font-size: 36px;
 	color: #B90404;
-	font-weight: bold;
 }
 
 .neutralCard {
 	background-color: #B6FEC9;
-	font-size: 36px;
 	color: #03AE17;
-	font-weight: bold;
 }
+
 </style>
 <body>
 	<div class='section dictionary'>
@@ -42,13 +43,45 @@
 	</div>
 	<div class='section button'>
 		<label>2. Change the interval: </label>
-		<input type="text" value="1000" id="timer"/>
+		<input type="text" value="2000" id="timer"/>
 		<input type="button" onclick="startSlideShow()" value="Start"/>
 		<input type="button" onclick="stopSlideShow()" value="Stop"/>
+		<input type="button" onclick="restartSlideShow()" value="Restart"/>
 	</div>
 	<div class='section'>
-		<div id='flashcard' class='flashcard'>
-			<label id='text'>...</label>
+		<div id='masculineCard' class='flashcard invisible'>
+			<br/>
+			<label name='singular'>...</label>
+			<br/>
+			<label name='plural'>...</label>
+		</div>
+		<div class='flashcard invisible'>
+		</div>
+		<div class='flashcard invisible'>
+		</div>
+	</div>
+	<div class='section'>
+		<div class='flashcard invisible'>
+		</div>
+		<div id='neutralCard' class='flashcard invisible'>
+			<br/>
+			<label name='singular'>...</label>
+			<br/>
+			<label name='plural'>...</label>
+		</div>
+		<div class='flashcard invisible'>
+		</div>
+	</div>
+	<div class='section'>
+		<div class='flashcard invisible'>
+		</div>
+		<div class='flashcard invisible'>
+		</div>
+		<div id='femanineCard' class='flashcard invisible'>
+			<br/>
+			<label name='singular'>...</label>
+			<br/>
+			<label name='plural'>...</label>
 		</div>
 	</div>
 <script>
@@ -73,30 +106,69 @@
 		timer = setInterval(slideShow, interval);
 	}
 
+	function restartSlideShow() {
+		currentIndex = 0;
+		startSlideShow();
+	}
+
 	function stopSlideShow() {
 		clearInterval(timer);
 	}
 
 	function slideShow() {
+		clearAllCard();
+
 		if(currentIndex >= (totalLine-1)) {
 			stopSlideShow();
 		}
 
+		if(currentIndex > 0 && (currentIndex+1) % 5 == 0) {
+			pause();
+		} 
+
 		text = lines[currentIndex++];
+		showCard(text);
+	}
+
+	function showCard(text) {
 		if(text.toUpperCase().startsWith('DER')) {
-			document.getElementById('flashcard').classList.add('masculineCard');
-			document.getElementById('flashcard').classList.remove('neutralCard');
-			document.getElementById('flashcard').classList.remove('femanineCard');
+			document.getElementById('masculineCard').classList.add('masculineCard');
 		} else if (text.toUpperCase().startsWith('DIE')) {
-			document.getElementById('flashcard').classList.add('femanineCard');
-			document.getElementById('flashcard').classList.remove('masculineCard');
-			document.getElementById('flashcard').classList.remove('neutralCard');
+			document.getElementById('femanineCard').classList.add('femanineCard');
 		} else if(text.toUpperCase().startsWith('DAS')) {
-			document.getElementById('flashcard').classList.add('neutralCard');
-			document.getElementById('flashcard').classList.remove('masculineCard');
-			document.getElementById('flashcard').classList.remove('femanineCard');
+			document.getElementById('neutralCard').classList.add('neutralCard');
 		}
-		document.getElementById('text').innerText = text;
+
+		var token = text.split(',');
+		setText('singular', token[0]);
+		if (token[1]) {
+			setText('plural', token[1]);
+		} else {
+			setText('plural', ' ');
+		}
+	}
+
+	function setText(name, text) {
+		var labels = document.getElementsByName(name);
+		for(var i=0 ; i<labels.length ; i++) {
+			labels[i].innerText = text;
+		}
+	}
+
+	function pause() {
+		clearInterval(timer);
+		setTimeout(startSlideShow, 5000);
+
+		displayLength = document.getElementById('timer').value;
+		setTimeout(clearAllCard, displayLength);
+	}
+
+	function clearAllCard() {
+		document.getElementById('masculineCard').classList.remove('masculineCard');
+		document.getElementById('femanineCard').classList.remove('femanineCard');
+		document.getElementById('neutralCard').classList.remove('neutralCard');
+		setText('singular', '');
+		setText('plural', '');
 	}
 </script>
 </body>
