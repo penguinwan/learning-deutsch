@@ -6,6 +6,7 @@
 	- imagine Brille is in Lily's bag, Lily is a woman, so Brille is femanine
 	- imagine Auto is in a cupboard, cupboard is neither, so Auto is neutral
 	- but it still doesn't work for me!!
+- Ok, ok, maybe I need a pause after a few cards, so I created the third version, there will be a pause of 5 seconds after 5 cards. And the result is still not prominent.
 - Now I am trying a method that I was taught in school, REPETITION!! When I was in my primary year, I had daily homeworks bring back from school(at least 1 per subject, non-negotiable), for Chinese homework, we were given 10-15 characters each day, our work is to write each character 10 times on exercise book (that is 100 characters each day), to some this might sounds like a horrible experience, but not to the young me, that experience helps me remember all the Chinese character I learnt even until today. Let's see!
 
 # Introduction
